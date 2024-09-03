@@ -1,3 +1,4 @@
+/* Global Styles */
 * {
   scrollbar-width: thin;
   scrollbar-color: hsl(347, 15%, 76%) transparent;
@@ -17,10 +18,12 @@
   border: transparent;
 }
 
+/* Utility Classes */
 .selected {
   background: hsl(344, 9%, 68%);
 }
 
+/* Library Container Styles */
 .library-container {
   position: fixed;
   top: 0;
@@ -33,38 +36,46 @@
   transform: translateX(-100%);
   transition: all 0.5s ease;
   opacity: 0;
-  h1 {
-    padding: 1rem;
-  }
 }
 
+.library-container h1 {
+  padding: 1rem;
+}
+
+/* Library Song Container Styles */
 .library-song-container {
   display: flex;
   align-items: center;
   padding: 1rem;
   cursor: pointer;
-  img {
-    width: 40%;
-  }
-  &:hover {
-    background: hsl(347, 15%, 76%);
-  }
 }
 
+.library-song-container img {
+  width: 40%;
+}
+
+.library-song-container:hover {
+  background: hsl(347, 15%, 76%);
+}
+
+/* Song Description Styles */
 .song-description {
   padding-left: 1rem;
-  h2 {
-    font-size: 1.1rem;
-    font-family: "Montserrat", sans-serif;
-    text-transform: uppercase;
-  }
-  h3 {
-    font-size: 0.8rem;
-    font-family: "Lora", serif;
-    text-transform: lowercase;
-  }
 }
 
+.song-description h2 {
+  font-size: 1.1rem;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+}
+
+.song-description h3 {
+  font-size: 0.8rem;
+  font-family: "Lora", serif;
+  text-transform: lowercase;
+}
+
+/* Active Library State */
 .active-library {
   transform: translateX(0%);
   opacity: 1;

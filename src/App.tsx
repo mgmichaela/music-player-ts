@@ -32,6 +32,27 @@ const App: React.FC = () => {
     duration: 0,
   });
 
+  const playSong = useCallback(() => {
+    if (audioRef.current) {
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.error("Error playing the song:", error);
+        });
+      }
+    }
+  }, []);
+
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      audioRef.current?.pause();
+      setIsPlaying(false);
+    } else {
+      playSong();
+      setIsPlaying(true);
+    }
+  };
+
   const timeUpdateHandler = useCallback(
     (e: React.SyntheticEvent<HTMLAudioElement>) => {
       const { currentTime, duration } = e.currentTarget;
@@ -40,15 +61,17 @@ const App: React.FC = () => {
     []
   );
 
-  const songEndHandler = useCallback(async () => {
+  const songEndHandler = useCallback(() => {
     const currentIndex = songs.findIndex((song) => song.id === currentSong.id);
     const nextSong = songs[(currentIndex + 1) % songs.length];
     setCurrentSong(nextSong);
+  }, [currentSong.id, songs]);
 
-    if (isPlaying && audioRef.current) {
-      audioRef.current.play();
+  const handleLoadedMetadata = useCallback(() => {
+    if (isPlaying) {
+      playSong();
     }
-  }, [currentSong.id, isPlaying, songs]);
+  }, [isPlaying, playSong]);
 
   return (
     <div className={`App ${libraryStatus ? "library-active" : ""}`}>
@@ -64,6 +87,7 @@ const App: React.FC = () => {
         setSongSpan={setSongSpan}
         songs={songs}
         setSongs={setSongs}
+        playSong={handlePlayPause}
       />
       <Library
         audioRef={audioRef}
@@ -75,7 +99,7 @@ const App: React.FC = () => {
       />
       <audio
         onTimeUpdate={timeUpdateHandler}
-        onLoadedMetadata={timeUpdateHandler}
+        onLoadedMetadata={handleLoadedMetadata}
         ref={audioRef}
         src={currentSong.audio}
         onEnded={songEndHandler}

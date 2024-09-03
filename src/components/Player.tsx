@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import "../styles/player.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -31,6 +30,7 @@ interface PlayerProps {
   setSongs: React.Dispatch<React.SetStateAction<Song[]>>;
   currentSong: Song;
   setCurrentSong: React.Dispatch<React.SetStateAction<Song>>;
+  playSong: () => void;
 }
 
 const Player: React.FC<PlayerProps> = ({
@@ -43,6 +43,7 @@ const Player: React.FC<PlayerProps> = ({
   setSongs,
   currentSong,
   setCurrentSong,
+  playSong,
 }) => {
   useEffect(() => {
     const currentSelectedSong = songs.map((song) => {
@@ -63,11 +64,12 @@ const Player: React.FC<PlayerProps> = ({
   }, [currentSong]);
 
   const playHandler = () => {
-    if (isPlaying) {
-      audioRef.current?.pause();
-      setIsPlaying(!isPlaying);
-    } else {
-      audioRef.current?.play();
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        playSong();
+      }
       setIsPlaying(!isPlaying);
     }
   };
@@ -91,15 +93,13 @@ const Player: React.FC<PlayerProps> = ({
     if (direction === "skip-back") {
       if ((currentIndex - 1) % songs.length === -1) {
         await setCurrentSong(songs[songs.length - 1]);
-        if (isPlaying) {
-          audioRef.current?.play();
-        }
-        return;
+      } else {
+        await setCurrentSong(songs[(currentIndex - 1) % songs.length]);
       }
-      await setCurrentSong(songs[(currentIndex - 1) % songs.length]);
     }
-    if (isPlaying) {
-      audioRef.current?.play();
+
+    if (!isPlaying) {
+      setIsPlaying(true);
     }
   };
 

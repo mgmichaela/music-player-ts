@@ -10,7 +10,7 @@ A few years back, I built this music player using React, SASS, and useRef to han
 
 - **TypeScript:** Because type safety is the new black.
 - **Cleaner, better code:** I took the old code, refactored it, and made it more maintainable and scalable.
-- **[Deployed](https://66d5dfce6681250e3112de6e--waves-music-player-ts.netlify.app/) via Netlify.**
+- **[Deployed](https://waves-music-player-ts.netlify.app/) via Netlify.**
 
 ### What Could Be Improved? 🛠️
 
